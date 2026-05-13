@@ -1,11 +1,12 @@
-import models from "../models/index.js";
+// import db from "../models/index.js";
+import * as db from "../models/index.js";
 import fs from "fs/promises";
 
 const BASE_URL = process.env.BASE_URL || "http://localhost:5000";
 
 export const get = async () => {
   try {
-    const categories = await models.Category.findAll();
+    const categories = await db.Category.findAll();
 
     const updatedCategories = categories.map((category) => ({
       ...category.toJSON(),
@@ -23,7 +24,7 @@ export const get = async () => {
 
 export const getById = async (data) => {
   try {
-    const category = await models.Category.findOne({ where: { id: data.id } });
+    const category = await db.Category.findOne({ where: { id: data.id } });
     return category;
   } catch (err) {
     return new Error(err.message);
@@ -37,7 +38,7 @@ export const insert = async (data, file) => {
     if (file) {
       imagePath = file.path;
     }
-    const result = await models.Category.create({
+    const result = await db.Category.create({
       name: data.name,
       description: data.description,
       image: imagePath, // 👈 add this
@@ -51,14 +52,14 @@ export const insert = async (data, file) => {
 
 export const deleteData = async (data) => {
   try {
-    const category = await models.Category.findOne({ where: { id: data.id } });
+    const category = await db.Category.findOne({ where: { id: data.id } });
     if (!category) throw new Error("No data found");
 
     if (category.image) {
       await fs.unlink(category.image).catch((error) => {});
     }
 
-    const result = await models.Category.destroy({
+    const result = await db.Category.destroy({
       where: { id: data.id },
     });
     return result;
@@ -69,10 +70,10 @@ export const deleteData = async (data) => {
 
 export const updateData = async (data, updateId) => {
   try {
-    const category = await models.Category.findOne({ where: { id: updateId } });
+    const category = await db.Category.findOne({ where: { id: updateId } });
     if (!category) throw new Error("No data found");
 
-    const result = await models.Category.update(
+    const result = await db.Category.update(
       {
         name: data.name,
         description: data.description,
@@ -87,14 +88,14 @@ export const updateData = async (data, updateId) => {
 
 export const fetchSubCategories = async (id) => {
   try {
-    const category = await models.Category.findByPk(id, {
+    const category = await db.Category.findByPk(id, {
       include: [
         {
-          model: models.SubCategory,
+          model: db.SubCategory,
           as: "subcategories",
           include: [
             {
-              model: models.Folder,
+              model: db.Folder,
               as: "folders", // make sure this alias matches your SubCategory → Folder association
               attributes: [], // don't fetch folder data, just count
             },
@@ -102,9 +103,9 @@ export const fetchSubCategories = async (id) => {
           attributes: {
             include: [
               [
-                models.sequelize.fn(
+                db.sequelize.fn(
                   "COUNT",
-                  models.sequelize.col("subcategories.folders.id"),
+                  db.sequelize.col("subcategories.folders.id"),
                 ),
                 "folderCount",
               ],
@@ -116,7 +117,7 @@ export const fetchSubCategories = async (id) => {
     });
     if (!category) throw new Error("No Category Found");
 
-    const allSubs = await models.SubCategory.findAll({
+    const allSubs = await db.SubCategory.findAll({
       where: { category_id: id },
     });
     const subMap = new Map(allSubs.map((sub) => [sub.id, sub.toJSON()]));
@@ -165,16 +166,16 @@ export const fetchSubCategories = async (id) => {
 export const fetchRootSubCategoriesOrFolder = async (id, parent_id = null) => {
   try {
     let result = [];
-    const subcategories = await models.SubCategory.findAll({
+    const subcategories = await db.SubCategory.findAll({
       where: { category_id: id, parent_id: parent_id },
       include: [
         {
-          model: models.SubCategory,
+          model: db.SubCategory,
           as: "childrenSubCategories",
           attributes: [],
         },
         {
-          model: models.Folder,
+          model: db.Folder,
           as: "folders",
           attributes: [],
         },
@@ -182,15 +183,15 @@ export const fetchRootSubCategoriesOrFolder = async (id, parent_id = null) => {
       attributes: {
         include: [
           [
-            models.sequelize.fn(
+            db.sequelize.fn(
               "COUNT",
-              models.sequelize.col("childrenSubCategories.id"),
+              db.sequelize.col("childrenSubCategories.id"),
             ),
             "childrenCount",
           ],
           // folder count
           [
-            models.sequelize.fn("COUNT", models.sequelize.col("folders.id")),
+            db.sequelize.fn("COUNT", db.sequelize.col("folders.id")),
             "folderCount",
           ],
         ],
@@ -200,19 +201,19 @@ export const fetchRootSubCategoriesOrFolder = async (id, parent_id = null) => {
 
     if (subcategories.length === 0) {
       if (parent_id === null) {
-        const folders = await models.Folder.findAll({
+        const folders = await db.Folder.findAll({
           where: { category_id: id },
           attributes: {
             include: [
               [
-                models.sequelize.fn("COUNT", models.sequelize.col("images.id")),
+                db.sequelize.fn("COUNT", db.sequelize.col("images.id")),
                 "imageCount",
               ],
             ],
           },
           include: [
             {
-              model: models.Image,
+              model: db.Image,
               as: "images",
               attributes: [],
             },
@@ -221,19 +222,19 @@ export const fetchRootSubCategoriesOrFolder = async (id, parent_id = null) => {
         });
         result = folders;
       } else {
-        const folders = await models.Folder.findAll({
+        const folders = await db.Folder.findAll({
           where: { sub_category_id: parent_id },
           attributes: {
             include: [
               [
-                models.sequelize.fn("COUNT", models.sequelize.col("images.id")),
+                db.sequelize.fn("COUNT", db.sequelize.col("images.id")),
                 "imageCount",
               ],
             ],
           },
           include: [
             {
-              model: models.Image,
+              model: db.Image,
               as: "images",
               attributes: [],
             },
@@ -254,10 +255,10 @@ export const fetchRootSubCategoriesOrFolder = async (id, parent_id = null) => {
 
 export const fetchFolders = async (id) => {
   try {
-    const category = await models.Category.findByPk(id, {
+    const category = await db.Category.findByPk(id, {
       include: [
         {
-          model: models.Folder,
+          model: db.Folder,
           as: "folders",
         },
       ],

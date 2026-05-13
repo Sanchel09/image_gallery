@@ -1,4 +1,5 @@
-import models from "../models/index.js";
+// import db from "../db/index.js";
+import * as db from "../models/index.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
@@ -19,7 +20,7 @@ const generateTokens = (user) => {
 };
 
 export const login = async ({ email, password }, userAgent, ipAddress) => {
-  const user = await models.User.findOne({
+  const user = await db.User.findOne({
     where: { email },
     attributes: ["id", "email", "password"],
   });
@@ -32,7 +33,7 @@ export const login = async ({ email, password }, userAgent, ipAddress) => {
   const { accessToken, refreshToken } = generateTokens(user);
 
   // Store refresh token in session
-  await models.Session.create({
+  await db.Session.create({
     userId: user.id,
     accessToken,
     refreshToken,
@@ -48,14 +49,14 @@ export const refreshAccessToken = async (refreshToken) => {
     throw new Error("Refresh token is required");
   }
 
-  const session = await models.Session.findOne({ where: { refreshToken } });
+  const session = await db.Session.findOne({ where: { refreshToken } });
   if (!session) {
     throw new Error("Invalid refresh token");
   }
 
   try {
     const payload = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
-    const user = await models.User.findByPk(payload.id);
+    const user = await db.User.findByPk(payload.id);
     const { accessToken: newAccessToken, refreshToken: newRefreshToken } =
       generateTokens(user);
 
@@ -71,5 +72,5 @@ export const refreshAccessToken = async (refreshToken) => {
 };
 
 export const logout = async (id) => {
-  await models.Session.destroy({ where: { userId: id } });
+  await db.Session.destroy({ where: { userId: id } });
 };

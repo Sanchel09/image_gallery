@@ -1,15 +1,16 @@
-import models from "../models/index.js";
+// import db from "../db/index.js";
+import * as db from "../models/index.js";
 
 export const get = async () => {
   try {
-    const subCategories = await models.SubCategory.findAll({
+    const subCategories = await db.SubCategory.findAll({
       include: [
         {
-          model: models.Category,
+          model: db.Category,
           as: "category",
         },
         {
-          model: models.SubCategory,
+          model: db.SubCategory,
           as: "parentSubCategory",
         },
       ],
@@ -52,7 +53,7 @@ export const insert = async (data) => {
     let targetCategoryId = categoryId;
 
     if (parentId) {
-      const parent = await models.SubCategory.findByPk(parentId);
+      const parent = await db.SubCategory.findByPk(parentId);
       if (!parent) {
         throw new Error("Parent subcategory does not exist");
       }
@@ -64,7 +65,7 @@ export const insert = async (data) => {
     }
 
     if (categoryId && parentId) {
-      const parent = await models.SubCategory.findByPk(parentId);
+      const parent = await db.SubCategory.findByPk(parentId);
       if (!parent) {
         throw new Error("Parent subcategory does not exist");
       }
@@ -80,7 +81,7 @@ export const insert = async (data) => {
       }
     }
 
-    await models.SubCategory.create({
+    await db.SubCategory.create({
       name,
       description,
       parent_id: parentId || null,
@@ -95,15 +96,15 @@ export const insert = async (data) => {
 
 export const getById = async (data) => {
   try {
-    const subCategory = await models.SubCategory.findOne({
+    const subCategory = await db.SubCategory.findOne({
       where: { id: data.id },
       include: [
         {
-          model: models.Category,
+          model: db.Category,
           as: "category",
         },
         {
-          model: models.SubCategory,
+          model: db.SubCategory,
           as: "subCategory",
         },
       ],
@@ -116,11 +117,11 @@ export const getById = async (data) => {
 
 export const updateData = async (data, updateId) => {
   try {
-    const subCategory = await models.SubCategory.findOne({
+    const subCategory = await db.SubCategory.findOne({
       where: { id: updateId },
     });
     if (subCategory) {
-      const result = await models.SubCategory.update(
+      const result = await db.SubCategory.update(
         {
           name: data.name,
           description: data.description,
@@ -140,11 +141,11 @@ export const updateData = async (data, updateId) => {
 
 export const deleteData = async (data) => {
   try {
-    const subCategory = await models.SubCategory.findOne({
+    const subCategory = await db.SubCategory.findOne({
       where: { id: data.id },
     });
     if (!subCategory) throw new Error("No data found");
-    const result = await models.SubCategory.destroy({
+    const result = await db.SubCategory.destroy({
       where: { id: data.id },
     });
     return result;
@@ -155,10 +156,10 @@ export const deleteData = async (data) => {
 
 export const fetchFolders = async (id) => {
   try {
-    const subCategory = await models.SubCategory.findByPk(id, {
+    const subCategory = await db.SubCategory.findByPk(id, {
       include: [
         {
-          model: models.Folder,
+          model: db.Folder,
           as: "folders",
         },
       ],

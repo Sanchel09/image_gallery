@@ -1,6 +1,7 @@
 import sharp from "sharp";
 import path from "path";
-import models from "../models/index.js";
+// import db from "../db/index.js";
+import * as db from "../models/index.js";
 import fs from "fs/promises";
 
 export const handleImageUpload = async (files, folder_id) => {
@@ -22,12 +23,12 @@ export const handleImageUpload = async (files, folder_id) => {
     });
   }
 
-  const createdImages = await models.Image.bulkCreate(imageEntries);
+  const createdImages = await db.Image.bulkCreate(imageEntries);
   return createdImages;
 };
 
 export const deleteImage = async (id) => {
-  const image = await models.Image.findOne({ where: { id } });
+  const image = await db.Image.findOne({ where: { id } });
   if (!image) throw new Error("No data found");
 
   // // Paths to delete
@@ -37,7 +38,7 @@ export const deleteImage = async (id) => {
   await fs.unlink(image.original_path).catch((error) => {});
   await fs.unlink(image.optimized_path).catch((error) => {});
 
-  const result = await models.Image.destroy({
+  const result = await db.Image.destroy({
     where: { id },
   });
 

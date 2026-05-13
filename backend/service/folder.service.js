@@ -1,18 +1,19 @@
-import models from "../models/index.js";
+// import db from "../db/index.js";
+import * as db from "../models/index.js";
 
 const BASE_URL = process.env.BASE_URL || "http://localhost:5000";
 
 export const get = async () => {
   try {
     // Fetch all categories with their direct subcategories and folders
-    const categories = await models.Category.findAll({
+    const categories = await db.Category.findAll({
       include: [
         {
-          model: models.SubCategory,
+          model: db.SubCategory,
           as: "subcategories",
         },
         {
-          model: models.Folder,
+          model: db.Folder,
           as: "folders",
         },
       ],
@@ -72,14 +73,14 @@ export const get = async () => {
 
 export const getById = async (data) => {
   try {
-    const folder = await models.Folder.findOne({
+    const folder = await db.Folder.findOne({
       include: [
         {
-          model: models.Category,
+          model: db.Category,
           as: "category",
         },
         {
-          model: models.SubCategory,
+          model: db.SubCategory,
           as: "subCategory",
         },
       ],
@@ -111,7 +112,7 @@ export const insert = async (payload) => {
         }
 
         if (subCategoryId) {
-          const subCat = await models.SubCategory.findByPk(subCategoryId);
+          const subCat = await db.SubCategory.findByPk(subCategoryId);
           if (!subCat) {
             throw new Error(`SubCategory id ${subCategoryId} not found`);
           }
@@ -144,7 +145,7 @@ export const insert = async (payload) => {
       }
 
       if (subCategoryId) {
-        const subCat = await models.SubCategory.findByPk(subCategoryId);
+        const subCat = await db.SubCategory.findByPk(subCategoryId);
         if (!subCat) {
           throw new Error(`SubCategory id ${subCategoryId} not found`);
         }
@@ -167,7 +168,7 @@ export const insert = async (payload) => {
       throw new Error("Invalid payload for folder creation");
     }
 
-    const created = await models.Folder.bulkCreate(folderRecords);
+    const created = await db.Folder.bulkCreate(folderRecords);
     return created;
   } catch (err) {
     throw new Error(err.message); // Throw error to handle at controller level
@@ -176,10 +177,10 @@ export const insert = async (payload) => {
 
 export const updateData = async (data, updateId) => {
   try {
-    const folder = await models.Folder.findOne({ where: { id: updateId } });
+    const folder = await db.Folder.findOne({ where: { id: updateId } });
     if (!folder) throw new Error("No data found");
 
-    const result = await models.Folder.update(
+    const result = await db.Folder.update(
       {
         name: data.name,
         category_id: data.category_id,
@@ -195,10 +196,10 @@ export const updateData = async (data, updateId) => {
 
 export const deleteData = async (data) => {
   try {
-    const folder = await models.Folder.findOne({ where: { id: data.id } });
+    const folder = await db.Folder.findOne({ where: { id: data.id } });
     if (!folder) throw new Error("No data found");
 
-    const result = await models.Folder.destroy({
+    const result = await db.Folder.destroy({
       where: { id: data.id },
     });
     return result;
@@ -209,10 +210,10 @@ export const deleteData = async (data) => {
 
 export const fetchImages = async (id) => {
   try {
-    const folder = await models.Folder.findByPk(id, {
+    const folder = await db.Folder.findByPk(id, {
       include: [
         {
-          model: models.Image,
+          model: db.Image,
           as: "images",
         },
       ],
