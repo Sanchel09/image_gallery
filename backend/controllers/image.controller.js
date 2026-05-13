@@ -1,6 +1,6 @@
-import { deleteImage, handleImageUpload } from "../service/image.service";
-import { sendResponse } from "../utils/helper";
-import { StatusCodes } from "../utils/statusCodes";
+import { deleteImage, handleImageUpload } from "../service/image.service.js";
+import { sendResponse } from "../utils/helper.js";
+import { StatusCodes } from "../utils/statusCodes.js";
 
 export const uploadImages = async (req, res) => {
   try {

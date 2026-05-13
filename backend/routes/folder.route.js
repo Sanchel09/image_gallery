@@ -1,5 +1,5 @@
 import express from "express";
-import { authenticate } from "../middleware/auth.middleware";
+import { authenticate } from "../middleware/auth.middleware.js";
 import {
   deleteFolder,
   getFolders,
@@ -7,7 +7,7 @@ import {
   getImagedByFolderId,
   insertFolders,
   updateFolder,
-} from "../controllers/folder.controller";
+} from "../controllers/folder.controller.js";
 
 const router = express.Router();
 

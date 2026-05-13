@@ -5,9 +5,9 @@ import {
   getById,
   insert,
   updateData,
-} from "../service/folder.service";
-import { sendResponse } from "../utils/helper";
-import { StatusCodes } from "../utils/statusCodes";
+} from "../service/folder.service.js";
+import { sendResponse } from "../utils/helper.js";
+import { StatusCodes } from "../utils/statusCodes.js";
 
 export const getFolders = async (req, res) => {
   try {
@@ -17,7 +17,7 @@ export const getFolders = async (req, res) => {
         res,
         StatusCodes.SUCCESS,
         "Folders fetched successfully",
-        folders
+        folders,
       );
     } else {
       sendResponse(res, StatusCodes.NO_CONTENT, "No folders found", folders);
@@ -27,7 +27,7 @@ export const getFolders = async (req, res) => {
       res,
       StatusCodes.INTERNAL_SERVER_ERROR,
       "An error occurred while fetching folders",
-      error.message
+      error.message,
     );
   }
 };
@@ -40,14 +40,14 @@ export const getFoldersById = async (req, res) => {
       res,
       StatusCodes.SUCCESS,
       "Folder fetched successfully",
-      result
+      result,
     );
   } catch (err) {
     sendResponse(
       res,
       StatusCodes.INTERNAL_SERVER_ERROR,
       "An error occurred while fetching folder",
-      err.message
+      err.message,
     );
   }
 };
@@ -60,7 +60,7 @@ export const insertFolders = async (req, res) => {
       return sendResponse(
         res,
         StatusCodes.BAD_REQUEST,
-        "No folder data provided"
+        "No folder data provided",
       );
     }
 
@@ -68,7 +68,7 @@ export const insertFolders = async (req, res) => {
       return sendResponse(
         res,
         StatusCodes.BAD_REQUEST,
-        "No folder data provided"
+        "No folder data provided",
       );
     }
 
@@ -77,14 +77,14 @@ export const insertFolders = async (req, res) => {
       res,
       StatusCodes.CREATED,
       "Folder(s) created successfully",
-      result
+      result,
     );
   } catch (error) {
     sendResponse(
       res,
       StatusCodes.INTERNAL_SERVER_ERROR,
       "An error occurred while creating folder(s)",
-      error.message
+      error.message,
     );
   }
 };
@@ -100,7 +100,7 @@ export const updateFolder = async (req, res) => {
       res,
       StatusCodes.INTERNAL_SERVER_ERROR,
       "An error occured while updating",
-      err.message
+      err.message,
     );
   }
 };
@@ -115,7 +115,7 @@ export const deleteFolder = async (req, res) => {
       res,
       StatusCodes.INTERNAL_SERVER_ERROR,
       "An error occured while deleting",
-      err.message
+      err.message,
     );
   }
 };
@@ -134,7 +134,7 @@ export const getImagedByFolderId = async (req, res) => {
       res,
       StatusCodes.INTERNAL_SERVER_ERROR,
       "An error occured while fetching",
-      error.message
+      error.message,
     );
   }
 };

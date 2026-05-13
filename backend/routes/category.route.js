@@ -9,7 +9,7 @@ import {
   getSubCategoriesByCategory,
   insertCategories,
   updateCategory,
-} from "../controllers/category.controller";
+} from "../controllers/category.controller.js";
 import { authenticate } from "../middleware/auth.middleware";
 import { upload } from "../middleware/upload";
 

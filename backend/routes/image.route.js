@@ -1,8 +1,8 @@
 import express from "express";
-import { authenticate } from "../middleware/auth.middleware";
-import { deleteData, uploadImages } from "../controllers/image.controller";
-import { upload } from "../middleware/upload";
-import { getImagedByFolderId } from "../controllers/folder.controller";
+import { authenticate } from "../middleware/auth.middleware.js";
+import { deleteData, uploadImages } from "../controllers/image.controller.js";
+import { upload } from "../middleware/upload.js";
+import { getImagedByFolderId } from "../controllers/folder.controller.js";
 
 const router = express.Router();
 

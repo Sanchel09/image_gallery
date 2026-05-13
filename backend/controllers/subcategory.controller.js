@@ -5,9 +5,9 @@ import {
   getById,
   insert,
   updateData,
-} from "../service/subcategory.service";
-import { sendResponse } from "../utils/helper";
-import { StatusCodes } from "../utils/statusCodes";
+} from "../service/subcategory.service.js";
+import { sendResponse } from "../utils/helper.js";
+import { StatusCodes } from "../utils/statusCodes.js";
 
 export const insertSubCategory = async (req, res) => {
   try {
@@ -17,14 +17,14 @@ export const insertSubCategory = async (req, res) => {
       res,
       StatusCodes.SUCCESS,
       "Sub category added successfully",
-      result
+      result,
     );
   } catch (error) {
     sendResponse(
       res,
       StatusCodes.INTERNAL_SERVER_ERROR,
       "An error occurred while creating sub categories",
-      error.message
+      error.message,
     );
   }
 };
@@ -37,14 +37,14 @@ export const getSubCategories = async (req, res) => {
         res,
         StatusCodes.SUCCESS,
         "Categories fetched successfully",
-        subCategories
+        subCategories,
       );
     } else {
       sendResponse(
         res,
         StatusCodes.NO_CONTENT,
         "No sub categories found",
-        subCategories
+        subCategories,
       );
     }
   } catch (error) {
@@ -52,7 +52,7 @@ export const getSubCategories = async (req, res) => {
       res,
       StatusCodes.INTERNAL_SERVER_ERROR,
       "An error occurred while fetching sub categories",
-      error.message
+      error.message,
     );
   }
 };
@@ -65,14 +65,14 @@ export const getSubCategoryById = async (req, res) => {
       res,
       StatusCodes.SUCCESS,
       "Sub Category fetched successfully",
-      result
+      result,
     );
   } catch (err) {
     sendResponse(
       res,
       StatusCodes.INTERNAL_SERVER_ERROR,
       "An error occurred while fetching sub categoryy",
-      err.message
+      err.message,
     );
   }
 };
@@ -88,7 +88,7 @@ export const updateSubCategory = async (req, res) => {
       res,
       StatusCodes.INTERNAL_SERVER_ERROR,
       "An error occured while updating",
-      err.message
+      err.message,
     );
   }
 };
@@ -103,7 +103,7 @@ export const deleteSubCategory = async (req, res) => {
       res,
       StatusCodes.INTERNAL_SERVER_ERROR,
       "An error occured while deleting",
-      err.message
+      err.message,
     );
   }
 };
@@ -116,14 +116,14 @@ export const getFoldersBySubCategory = async (req, res) => {
       res,
       StatusCodes.SUCCESS,
       "Folders fetched successfully",
-      result
+      result,
     );
   } catch (error) {
     sendResponse(
       res,
       StatusCodes.INTERNAL_SERVER_ERROR,
       "An error occured while deleting",
-      error.message
+      error.message,
     );
   }
 };

@@ -7,9 +7,9 @@ import {
   fetchSubCategories,
   fetchFolders,
   fetchRootSubCategoriesOrFolder,
-} from "../service/category.service";
-import { sendResponse } from "../utils/helper";
-import { StatusCodes } from "../utils/statusCodes";
+} from "../service/category.service.js";
+import { sendResponse } from "../utils/helper.js";
+import { StatusCodes } from "../utils/statusCodes.js";
 
 export const insertCategories = async (req, res) => {
   try {

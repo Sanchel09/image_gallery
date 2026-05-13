@@ -1,6 +1,6 @@
-import { login, refreshAccessToken, logout } from "../service/auth.service";
-import { sendResponse } from "../utils/helper";
-import { StatusCodes } from "../utils/statusCodes";
+import { login, refreshAccessToken, logout } from "../service/auth.service.js";
+import { sendResponse } from "../utils/helper.js";
+import { StatusCodes } from "../utils/statusCodes.js";
 
 export const loginUser = async (req, res) => {
   try {
