@@ -1,9 +1,9 @@
 import express from "express";
-import categoryRoute from "./category.route";
-import authRoute from "./auth.route";
-import subCategoryRoute from "./subcategory.route";
-import folderRoute from "./folder.route";
-import imageRoute from "./image.route";
+import categoryRoute from "./category.route.js";
+import authRoute from "./auth.route.js";
+import subCategoryRoute from "./subcategory.route.js";
+import folderRoute from "./folder.route.js";
+import imageRoute from "./image.route.js";
 const router = express.Router();
 
 router.use("/categories", categoryRoute);
