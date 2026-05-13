@@ -2,7 +2,7 @@ import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
 import "dotenv/config";
-import db from "./config/database";
+import db from "./config/database.js";
 import globalRoutes from "./routes/global.route";
 import path from "path";
 

@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "CRM for image gallery",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "start": "nodemon ./index.js --exec babel-node",
     "db:reset": "npx sequelize-cli db:migrate:undo:all && npx sequelize-cli db:create && npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all"
