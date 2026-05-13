@@ -1,4 +1,4 @@
-import models from "../models/index";
+import models from "../models/index.js";
 
 const BASE_URL = process.env.BASE_URL || "http://localhost:5000";
 

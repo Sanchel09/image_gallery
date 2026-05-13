@@ -1,6 +1,6 @@
 import sharp from "sharp";
 import path from "path";
-import models from "../models/index";
+import models from "../models/index.js";
 import fs from "fs/promises";
 
 export const handleImageUpload = async (files, folder_id) => {
