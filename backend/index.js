@@ -3,7 +3,7 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import "dotenv/config";
 import db from "./config/database.js";
-import globalRoutes from "./routes/global.route";
+import globalRoutes from "./routes/global.route.js";
 import path from "path";
 
 const PORT = process.env.PORT || 5000;
