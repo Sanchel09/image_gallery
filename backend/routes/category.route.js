@@ -10,8 +10,8 @@ import {
   insertCategories,
   updateCategory,
 } from "../controllers/category.controller.js";
-import { authenticate } from "../middleware/auth.middleware";
-import { upload } from "../middleware/upload";
+import { authenticate } from "../middleware/auth.middleware.js";
+import { upload } from "../middleware/upload.js";
 
 const router = express.Router();
 

@@ -1,5 +1,5 @@
 import express from "express";
-import { authenticate } from "../middleware/auth.middleware";
+import { authenticate } from "../middleware/auth.middleware.js";
 import {
   deleteSubCategory,
   getFoldersBySubCategory,
@@ -7,7 +7,7 @@ import {
   getSubCategoryById,
   insertSubCategory,
   updateSubCategory,
-} from "../controllers/subcategory.controller";
+} from "../controllers/subcategory.controller.js";
 
 const router = express.Router();
 
