@@ -11,7 +11,9 @@ const __dirname = path.dirname(__filename);
 const basename = path.basename(__filename);
 
 // ✅ FIX: replace require with dynamic import
-import configFile from "../config/config.json" assert { type: "json" };
+const configFile = JSON.parse(
+  fs.readFileSync(new URL("../config/config.json", import.meta.url)),
+);
 
 const env = process.env.NODE_ENV || "development";
 const config = configFile[env];
